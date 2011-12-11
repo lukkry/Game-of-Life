@@ -1,0 +1,25 @@
+%html
+  %head
+    %title Sinatra JQuery Test
+    %script{:type => 'text/javascript', :src => 'http://code.jquery.com/jquery-latest.js'}
+    %style{:type => "text/css"}
+      :plain
+        #hello{
+          border: 1px solid black;
+          width: 20px;
+          height: 20px;
+          display: block;
+        }
+    :javascript
+      $(document).ready(function() {
+        $.ajax({
+          type: "GET",
+          url: '/get_cells.json',
+          dataType: 'json',
+          success: function(data){
+            alert(data.a);
+          }
+        })
+      });
+  %body
+
