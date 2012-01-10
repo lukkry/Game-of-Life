@@ -5,8 +5,8 @@ class Cell
     @live = live 
     @pos = pos
     @world = world
-    @row_index = @pos / @world.size
-    @col_index = @pos % @world.size
+    @row_index = @pos / @world.width
+    @col_index = @pos % @world.width
   end
 
   def alive?
@@ -34,23 +34,30 @@ class Cell
   def row_neighbours_count(row_pos)
     if row_pos == :top
       return 0 if @row_index <= 0
-      start_index = (@row_index - 1) * @world.size
+      start_index = (@row_index - 1) * @world.width + @col_index - 1
       c_pos = [@col_index - 1, @col_index, @col_index + 1]
     elsif row_pos == :bottom
-      return 0 if @row_index >= @world.size - 1
-      start_index = (@row_index + 1) * @world.size 
+      return 0 if @row_index >= @world.width - 1
+      start_index = (@row_index + 1) * @world.width + @col_index - 1 
       c_pos = [@col_index - 1, @col_index, @col_index + 1]
     elsif row_pos == :middle
-      start_index = @row_index * @world.size
-      c_pos = [@col_index - 1, @col_index + 1]
+      start_index = @row_index * @world.width + @col_index - 1
+      c_pos = [@col_index - 1, -1, @col_index + 1]
     end
 
     counter = 0 
-    end_index = start_index + @world.size - 1
-    n = @world[start_index..end_index]
+    #end_index = start_index + @world.width - 1
+    end_index = start_index + 2 
+    n = @world.board[start_index..end_index]
+    c = 0
     c_pos.each do |i|
-      i -= @world.size if i >= @world.size
-      counter += 1 if n[i].alive?
+      if (i >= @world.width || i < 0)
+        c += 1
+        next
+      end
+      raise "#{@world.width}|#{@world.height}|#{start_index}|#{end_index}|#{i}|#{c}|#{@world.binary_board[(-1)..2]}" if n[c].nil?
+      counter += 1 if n[c].alive?
+      c += 1
     end
     counter
   end

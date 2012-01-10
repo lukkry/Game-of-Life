@@ -1,14 +1,22 @@
 class World 
-  attr_accessor :board, :size
+  attr_accessor :board, :width, :height
 
-  def initialize(size = 3, random = false)
-    @size = size
-    @board = Array.new(@size * @size)
+  def initialize(width = 3, height = 3, init_board = nil, random = false)
+    @width = width.to_i
+    @height = height.to_i
+    @board = Array.new(@width * @height)
 
     # init board with dead cells
     @board.each_with_index do |cell, index| 
       @board[index] = Cell.new(self, index)
     end 
+
+    #init board with specific start state
+    if init_board
+      init_board.each_with_index do |cell, index|
+        @board[index].alive! if cell == true || cell == 1 
+      end
+    end
 
     # alive random cells
     if random
@@ -22,6 +30,11 @@ class World
     @board[i]
   end
 
+  # return board as as binary array: [0, 1, 0, 1]
+  def binary_board
+    @board.collect{|c| c.alive? ? 1 : 0}
+  end
+
   def alive_cell(cell)
     self[cell[0], cell[1]].alive!
   end
@@ -33,7 +46,7 @@ class World
   end
 
   def tick!
-    new_board = Array.new(@size * @size)
+    new_board = Array.new(@width * @height)
     new_board.each_with_index do |cell, index| 
       new_board[index] = Cell.new(self, index)
     end 
@@ -56,9 +69,14 @@ class World
 
   private 
 
+  # transform single dimensional Array notation to two dimensional
+  #def transform_x_to_xy(x)
+  #  [x / @width, x % @width]
+  #end
+
   # transform two dimensional Array notation to one dimensional
   def transform_xy_to_x(x, y)
-    (x * @size) + y
+    (x * @width) + y
   end
 
 end

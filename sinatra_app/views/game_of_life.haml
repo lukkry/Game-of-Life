@@ -1,0 +1,54 @@
+%html
+  %head
+    %title Game of life 
+    %script{:type => 'text/javascript', :src => 'http://code.jquery.com/jquery-latest.js'}
+    %style{:type => "text/css"}
+      :plain
+        .cell{border: 1px solid black; width: 10px; height: 10px; float: left; background: white;}
+        .cell_row{overflow: hidden}
+        .live{background: black;}
+    :javascript
+      var width = 0;
+      var height = 0;
+      var timespan = 0;
+
+      $(document).ready(function() {
+        width = $("#board").attr("width");
+        height = $("#board").attr("height");
+        timespan = $("#board").attr("timespan");
+
+        for (i=0; i < width; i++){
+          row = document.createElement('div');
+          row.setAttribute('class', 'cell_row');
+          $("#board").append(row);
+          for (j=0; j < height; j++){
+            div = document.createElement('div');
+            div.setAttribute('class', 'cell');
+            div.setAttribute('id', "cell_" + i + "_" + j);
+            $("#board .cell_row").last().append(div);
+          }
+        }
+        do_post();
+      });
+
+      function do_post(){
+        a_params = {
+          type: "POST",
+          url: '/board',
+          dataType: 'json',
+          success: function(data){
+            $(".cell").removeClass("live");
+            for (i = 0; i < width; i++){
+              for (j = 0; j < height; j++){
+                if (data[(i * width) + j] == 1){$("#cell_" + i + "_" + j).addClass("live")}
+              }
+            }
+          }
+        }
+        $.ajax(a_params);
+        setTimeout("do_post()", timespan);
+      }
+
+  %body
+    #board{:width => @width, :height => @height, :timespan => @timespan}
+

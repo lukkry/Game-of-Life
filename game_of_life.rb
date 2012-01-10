@@ -1,24 +1,6 @@
-require './lib/world'
-require './lib/cell'
-require 'benchmark'
+Dir[File.expand_path("lib/**/*.rb")].each {|f| require f}
+require 'ruby-prof'
 
-include Benchmark
-
-rt = Benchmark.realtime do
-  world = World.new(100, true)
-  1000.times do
-    world.tick!
-  end
-end
-puts rt.to_s
-
-# one-dimensional array
-# size: 100x100
-# tick: 1000
-# real time: 37.090540215s
-#
-# two-dimensional array
-# size: 100x100
-# tick: 1000
-# real time : 67.129922333s
+world = World.new(5, 3, nil, true)
+10.times{world.tick!}
 

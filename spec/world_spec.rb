@@ -35,9 +35,18 @@ describe World do
     world.alive_cells_count.should == 0
   end
 
+  it "should be able to initialize with specific board" do
+    world = World.new(3, 3, [true, true, false, true, true, false, false, false, false])
+    world[0, 0].should be_alive
+    world[0, 1].should be_alive
+    world[0, 2].should be_dead
+    world[1, 0].should be_alive
+    world[1, 1].should be_alive
+  end
+
   context "oscillators" do
     it "should behave like a blinker" do
-      world = World.new(5)
+      world = World.new(5, 5)
       blinker_cells = [[2, 1], [2, 2], [2, 3]]
       blinker_cells.each{|c| world.alive_cell(c)}
 
@@ -56,7 +65,7 @@ describe World do
 
   context "still lifes" do
     it "should keep the same shape" do
-      world = World.new(6)
+      world = World.new(6, 6)
       beehive_cells = [[1, 2], [1, 3], [2, 1], [2, 4], [3, 2], [3, 3]]
       beehive_cells.each{|c| world.alive_cell(c)}
       3.times{world.tick!}
