@@ -17,11 +17,11 @@
         height = $("#board").attr("height");
         timespan = $("#board").attr("timespan");
 
-        for (i=0; i < width; i++){
+        for (i=0; i < height; i++){
           row = document.createElement('div');
           row.setAttribute('class', 'cell_row');
           $("#board").append(row);
-          for (j=0; j < height; j++){
+          for (j=0; j < width; j++){
             div = document.createElement('div');
             div.setAttribute('class', 'cell');
             div.setAttribute('id', "cell_" + i + "_" + j);
@@ -38,8 +38,8 @@
           dataType: 'json',
           success: function(data){
             $(".cell").removeClass("live");
-            for (i = 0; i < width; i++){
-              for (j = 0; j < height; j++){
+            for (i = 0; i < height; i++){
+              for (j = 0; j < width; j++){
                 if (data[(i * width) + j] == 1){$("#cell_" + i + "_" + j).addClass("live")}
               }
             }

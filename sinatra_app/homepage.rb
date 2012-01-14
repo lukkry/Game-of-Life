@@ -20,11 +20,12 @@ configure do
 end
 
 get '/' do
-  @width = params[:width] || 60 
-  @height = params[:height] || 30
+  @width = params[:width] || 100 
+  @height = params[:height] || 40
   @timespan = params[:timespan] || 500
 
-  world = World.new(@width, @height, nil, true)
+  world = World.new(@width, @height)
+  world.randomize!
   game = Game.new(:board => world.binary_board, :width => @width, :height => @height)
   if game.save
     session[:game_id] = game.id.to_s
