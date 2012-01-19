@@ -48,7 +48,7 @@ describe World do
     it "behave like a blinker" do
       world = World.new(5, 5)
       blinker_cells = [[2, 1], [2, 2], [2, 3]]
-      blinker_cells.each{|c| world.alive_cell(c)}
+      world.alive_cells(*blinker_cells)
 
       world.tick!
       world.alive_cells_count.should == 3
@@ -67,7 +67,7 @@ describe World do
     it "keep the same shape" do
       world = World.new(6, 6)
       beehive_cells = [[1, 2], [1, 3], [2, 1], [2, 4], [3, 2], [3, 3]]
-      beehive_cells.each{|c| world.alive_cell(c)}
+      world.alive_cells(*beehive_cells)
       3.times{world.tick!}
       world.alive_cells_count.should == 6
       beehive_cells.each do |cell|

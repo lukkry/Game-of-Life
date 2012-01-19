@@ -37,10 +37,6 @@ class World
     @board.collect{|c| c.alive? ? 1 : 0}
   end
 
-  def alive_cell(cell)
-    self[cell[0], cell[1]].alive!
-  end
-
   def alive_cells(*cells)
     cells.each do |cell|
       self[cell[0], cell[1]].alive!
